@@ -2,18 +2,18 @@
 
 European natural gas storage and LNG terminal data from Gas Infrastructure Europe (GIE): how full EU gas storage is, by country, operator or site; LNG terminal inventory and send-out; the facility directory; and planned and unplanned outage reports.
 
-Part of [Pipeworx](https://pipeworx.io) — an MCP gateway connecting AI agents to 1800+ live data sources. This is an independent, unofficial integration — not affiliated with, endorsed by, or published by the upstream provider.
+Part of [Pipeworx](https://pipeworx.io) — an MCP gateway connecting AI agents to 1879+ live data sources. This is an independent, unofficial integration — not affiliated with, endorsed by, or published by the upstream provider.
 
 ## Tools
 
-- `gie_gas_storage(country?, company?, facility?, date?, from?, to?, days?, _apiKey)`: daily gas storage level for the EU, one country, one operator or one facility. Covers fill % of working gas volume, gas in storage (TWh), injection and withdrawal (GWh/d), trend and the gas day. With no dates you get the latest gas day. **Requires a GIE key.**
-- `gie_lng_terminals(country?, company?, facility?, date?, from?, to?, days?, _apiKey)`: daily LNG terminal inventory (1000 m³ LNG and GWh), send-out, and declared maximum inventory and send-out. **Requires a GIE key.**
+- `gie_gas_storage(country?, company?, facility?, date?, from?, to?, days?, _apiKey)`: daily gas storage level for the EU, one country, one operator or one facility. Covers fill % of working gas volume, gas in storage (TWh), injection and withdrawal (GWh/d), trend and the gas day. With no dates you get the latest gas day. Served with Pipeworx's platform GIE key; `_apiKey` overrides it.
+- `gie_lng_terminals(country?, company?, facility?, date?, from?, to?, days?, _apiKey)`: daily LNG terminal inventory (1000 m³ LNG and GWh), send-out, and declared maximum inventory and send-out. Served with Pipeworx's platform GIE key; `_apiKey` overrides it.
 - `gie_storage_facilities(dataset?, country?, query?, include_closed?)`: lists every storage system operator (or LNG operator) by country, with each facility's name, type, EIC code and operational dates. Use the EIC codes as `company` / `facility` in the other tools. Keyless.
 - `gie_storage_outages(dataset?, country?, company?, facility?, type?, from?, to?, limit?, page?)`: planned and unplanned unavailability reports, newest first. Each report gives the facility, start and end, whether the end is confirmed or estimated, the capacity taken offline and the operator's reason. `from`/`to` filter on the publication date. Keyless.
 
 ## Auth
 
-The two directory and outage tools are keyless. The two level tools are **BYO only**: GIE refuses storage and LNG level calls without a personal API key. Registration is free at https://agsi.gie.eu/account, and the same key works on both AGSI+ and ALSI+. Pass it as `_apiKey`. Without a key, the tool refuses with "requires an API key" and points to the keyless tools.
+The two directory and outage tools are keyless. The two level tools need a GIE key (GIE refuses storage and LNG level calls without a personal API key; Pipeworx supplies its own, and a caller's `_apiKey` overrides it). Registration is free at https://agsi.gie.eu/account, and the same key works on both AGSI+ and ALSI+. Pass it as `_apiKey`. If no key is available at all, the tool refuses with "requires an API key" and points to the keyless tools.
 
 ## Data sources
 
@@ -71,13 +71,19 @@ directly, instead of just this one's:
 }
 ```
 
-Both URLs reach the same gateway and the same 1800+ data sources. The
+Both URLs reach the same gateway and the same 1879+ data sources. The
 only difference is which pack's tools are listed **directly**; `ask_pipeworx`
 reaches all of them from either one.
 
 ## No MCP client? Call it over HTTP
 
-This pack takes your own API key (`_apiKey`) — we don't front one for it, so there's no curl here that would run without it. Inspect any tool: `GET https://gateway.pipeworx.io/v1/tools/gie_gas_storage`. Find one: `POST https://gateway.pipeworx.io/v1/tools/search_packs` with `{"query":"..."}`.
+```bash
+curl -X POST https://gateway.pipeworx.io/v1/tools/gie_gas_storage \
+  -H 'Content-Type: application/json' \
+  -d '{"country":"DE"}'
+```
+
+No account needed for the first calls. Inspect any tool: `GET https://gateway.pipeworx.io/v1/tools/gie_gas_storage`. Find one: `POST https://gateway.pipeworx.io/v1/tools/search_packs` with `{"query":"..."}`.
 
 ## Standalone (no gateway account)
 
