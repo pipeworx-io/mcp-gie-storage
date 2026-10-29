@@ -1,12 +1,20 @@
 {
   "name": "@pipeworx/mcp-gie-storage",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "GIE Storage MCP — European natural gas storage and LNG terminal transparency data from Gas Infrastructure Europe (GIE): AGSI+ (underground gas storage) and ALSI+ (LNG terminals).",
   "type": "module",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./tools.json": "./tools.json",
+    "./package.json": "./package.json"
+  },
   "bin": {
     "mcp-gie-storage": "bin/cli.js"
+  },
+  "files": ["bin/", "lib/", "tools.json", "server.json"],
+  "engines": {
+    "node": ">=18"
   },
   "keywords": ["mcp", "mcp-server", "model-context-protocol", "pipeworx", "gie-storage"],
   "license": "MIT",
@@ -14,19 +22,12 @@
     "type": "git",
     "url": "git+https://github.com/pipeworx-io/mcp-gie-storage.git"
   },
-  "scripts": {
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.30.0",
-    "tsx": "^4.19.0"
-  },
-  "devDependencies": {
-    "typescript": "^5.9.3",
-    "@cloudflare/workers-types": "^4.20260405.1"
-  },
+  "mcpName": "io.github.pipeworx-io/gie-storage",
   "pipeworx": {
-    "sourceHash": "v1-fab822905a48a02b268fc7623c9bc7f4a1403db6e0601fe4ac36c9db4ba47cdd",
-    "sourceCommit": "445bacc5596a845c12d6945fbfcdf330ef60dcc4"
+    "mode": "gateway",
+    "slug": "gie-storage",
+    "gatewaySlug": "gie-storage",
+    "sourceHash": "v1-206d34deb520a6877ffcdab4a21c7dc75b0e2901eca0d91a5ada10f6565cd28f",
+    "sourceCommit": "bb047243cf27f32453103de186b8e6a8b6a1ce79"
   }
 }
